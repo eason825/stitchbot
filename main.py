@@ -42,7 +42,7 @@ async def island(ctx, code):
   embed.set_footer(text=footertext)
   await ctx.send(embed=embed)
 
-
+# make sure that the battle star emoji is changed to an emoji from your own server
 @slash.slash(description="Get A Weapons WID")
 async def wid(ctx, *, weapon):
     await ctx.defer()
