@@ -18,7 +18,7 @@ color = 0x5865F2
 #0xb062a9
 footertext = "made with ❤"
 slash = SlashCommand(client, sync_commands=True)
-
+fortnite_api_key = "https://fortniteapi.io API key"
 
 @client.event
 async def on_ready():
@@ -29,7 +29,7 @@ async def island(ctx, code):
   await ctx.defer()
   url = f"https://fortniteapi.io/v1/creative/island?code={code}"
   headers = {
-      "Authorization": os.environ['fortniteio']
+      "Authorization": fortnite_api_key
   }
   r = requests.post(url, headers=headers)
   data = r.json()
@@ -50,7 +50,7 @@ async def wid(ctx, *, weapon):
     embed=discord.Embed(title=f"All Weapons Matching: {weapon}", color=color)
     url = "https://fortniteapi.io/v1/loot/list?lang=en"
     headers = {
-        "Authorization": os.environ['fortniteio']
+        "Authorization": fortnite_api_key
     }
     r = requests.post(url, headers=headers)
     data = r.json()
@@ -97,4 +97,4 @@ def ready():
 
 
 ready()
-client.run(os.environ['token'])
+client.run("TOKEN")
