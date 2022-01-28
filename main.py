@@ -107,6 +107,24 @@ async def creator(ctx, *, code):
   else:
     await ctx.send("Creator Not Found!")
 
+@slash.slash(description="Get a fortnite skins styles")
+async def styles(ctx, *, skin):
+  await ctx.defer()
+  r = requests.get(f'https://fortnite-api.com/v2/cosmetics/br/search/all?name={skin}')
+  data = r.json()
+
+  for sub_dict in data['data']:
+    for troll in sub_dict['variants']:
+      #print(troll['channel'])
+      pp = troll['options']
+
+      for style in pp:
+        embed=discord.Embed(title=style['name'], color=color)
+        embed.set_thumbnail(url=style['image'])
+        embed.set_footer(text=footertext)
+        await ctx.send(embed=embed)
+
+
 @slash.slash(description="invite me!")
 async def invite(ctx):
   await ctx.send("https://discord.com/api/oauth2/authorize?client_id=892078548234403891&permissions=8&scope=bot%20applications.commands")
