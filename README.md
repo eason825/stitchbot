@@ -1,6 +1,5 @@
 # stitchbot
 an open source fortnite discord bot
-very basic lol
 
 ## credits:
 * Fortnite-Api (officer)
