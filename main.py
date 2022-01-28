@@ -13,13 +13,18 @@ from discord_slash.model import ButtonStyle
 from typing import Union, Any
 
 
-
+#defining stuff lol
 intents = discord.Intents().all()
 client = commands.Bot(command_prefix='s!', intents=intents)
-color = 0x5865F2
-#0xb062a9
 footertext = "made with ❤"
 slash = SlashCommand(client, sync_commands=True)
+
+#things for the commands to work
+
+footertext = "made with ❤" #embed footer text
+color = 0x5865F2     #embed color (blurple)
+fortnite_api_io_key = os.environ["fnio"] #put it in env
+bs = "<:battlestar:933052005331660920>" #put a custom battle star emoji or a star emoji to work
 
 
 async def change_pres():
@@ -44,10 +49,19 @@ async def change_pres():
 async def on_ready():
   print(f'client ready as {client.user.name}#{client.user.discriminator}')
 
+
+@slash.slash(description="Current Battle Royale Map")
+async def map(ctx):
+  embed=discord.Embed(color=color)
+  embed.set_image(url='https://fortnite-api.com/images/map_en.png')
+  embed.set_footer(text=footertext)
+  await ctx.send(embed=embed, ephemeral=True)
+
+
 @slash.slash(description="help command")
 async def help(ctx):
   embed=discord.Embed(title="Stitch Help | 📋", color=color)
-  embed.add_field(name="Support | Help", value="[Support Server](https://discord.gg/noteason) | [invite](https://discord.com/api/oauth2/authorize?client_id=892078548234403891&permissions=8&scope=bot%20applications.commands)")
+  embed.add_field(name="Support | Help", value="[Support Server](https://discord.gg/noteason) | [invite](https://discord.com/api/oauth2/authorize?client_id=892078548234403891&permissions=8&scope=bot%20applications.commands) | [Source Code](https://github.com/noteason/stitchbot)")
   await ctx.send(embed=embed)
 
 @slash.slash(description="Get Fortnite Cosmetic")
@@ -97,6 +111,25 @@ async def creator(ctx, *, code):
 async def invite(ctx):
   await ctx.send("https://discord.com/api/oauth2/authorize?client_id=892078548234403891&permissions=8&scope=bot%20applications.commands")
 
+@slash.slash(description="Shows New Fortnite Cosmetics")
+async def new(ctx):
+  await ctx.defer()
+  url = "https://fortniteapi.io/v2/items/upcoming?lang=en"
+  headers = {
+      "Authorization": fortnite_api_io_key
+  }
+  r = requests.get(url, headers=headers)
+  print(r)
+  data = r.json()
+  embed=discord.Embed(title="Upcoming Fortnite Cosmetics", color=color)
+  items = data['items']
+
+  for item in items:
+    embed.add_field(name=item['name'], value=f"**ID:** {item['id']}\n**Rarity:** {item['rarity']['name']}")
+  embed.set_footer(text=footertext)
+  await ctx.send(embed=embed)
+    
+
 @slash.slash(description="battle royale news")
 async def brnews(ctx):
  
@@ -112,7 +145,7 @@ async def brnews(ctx):
         embed.set_image(url=image)
         embed.set_footer(text=footertext)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     elif response.status_code == 400:
  
@@ -121,7 +154,7 @@ async def brnews(ctx):
         embed = discord.Embed(title='Error', 
                 description=f'`{error}`')
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     elif response.status_code == 404:
 
@@ -130,14 +163,14 @@ async def brnews(ctx):
         embed = discord.Embed(title='Error', 
         description=f'``{error}``')
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
 @slash.slash(description="Creative Map Info")
 async def island(ctx, code):
   await ctx.defer()
   url = f"https://fortniteapi.io/v1/creative/island?code={code}"
   headers = {
-      "Authorization": os.environ['fortniteio']
+      "Authorization": fortnite_api_io_key
   }
   r = requests.post(url, headers=headers)
   data = r.json()
@@ -158,7 +191,7 @@ async def wid(ctx, *, weapon):
     embed=discord.Embed(title=f"All Weapons Matching: {weapon}", color=color)
     url = "https://fortniteapi.io/v1/loot/list?lang=en"
     headers = {
-        "Authorization": os.environ['fortniteio']
+        "Authorization": fortnite_api_io_key
     }
     r = requests.post(url, headers=headers)
     data = r.json()
@@ -167,19 +200,19 @@ async def wid(ctx, *, weapon):
       namee = item['name']
       if weapon.title() in namee:
         if item['rarity'] == "common":
-          rarity = "common | <:battlestar:933052005331660920>"
+          rarity = f"common | {bs}"
         if item['rarity'] == "uncommon":
-          rarity = "uncommon | <:battlestar:933052005331660920><:battlestar:933052005331660920>"
+          rarity = f"uncommon | {bs}{bs}"
         if item['rarity'] == "rare":
-          rarity = "rare | <:battlestar:933052005331660920><:battlestar:933052005331660920><:battlestar:933052005331660920>"
+          rarity = f"rare | {bs}{bs}{bs}"
         if item['rarity'] == "epic":
-          rarity = "epic | <:battlestar:933052005331660920><:battlestar:933052005331660920><:battlestar:933052005331660920><:battlestar:933052005331660920>"
+          rarity = f"epic | {bs}{bs}{bs}{bs}"
         if item['rarity'] == "legendary":
-          rarity = "legendary | <:battlestar:933052005331660920><:battlestar:933052005331660920>"
+          rarity = f"legendary | {bs}{bs}{bs}{bs}{bs}"
         if item['rarity'] == "mythic":
-          rarity = "mythic | <:battlestar:933052005331660920><:battlestar:933052005331660920><:battlestar:933052005331660920><:battlestar:933052005331660920><:battlestar:933052005331660920><:battlestar:933052005331660920>"
+          rarity = f"mythic | {bs}{bs}{bs}{bs}{bs}{bs}"
         if item['rarity'] == "exotic":
-          rarity = "exotic | <:battlestar:933052005331660920><:battlestar:933052005331660920><:battlestar:933052005331660920><:battlestar:933052005331660920><:battlestar:933052005331660920>"
+          rarity = f"exotic | {bs}{bs}{bs}{bs}{bs}"
         embed.add_field(name=f"{namee} | {item['id']}", value=f"Rarity - **{rarity}**\n\n", inline=False)
     embed.set_footer(text=footertext)
     await ctx.send(embed=embed)
@@ -204,7 +237,7 @@ def ready():
   discord.gateway.DiscordWebSocket.identify = loc["identify"]
 
 
-
+## running stuff (do not change anything except for the token)
 
 ready()
 client.loop.create_task(change_pres())
