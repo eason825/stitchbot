@@ -1,6 +1,8 @@
 # stitchbot
 an open source fortnite discord bot
 
+
+# if u dont even know basic py i recommend you dont use this bot :) 
 ## credits:
 * Fortnite-Api (officer)
 * FortniteApi.io (Quentin, GMatrixGames)
