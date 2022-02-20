@@ -6,12 +6,6 @@ import asyncio
 import inspect
 import requests
 import re
-from discord_slash.utils.manage_components import create_select, create_select_option, create_actionrow, create_button, wait_for_component
-
-from discord_slash import SlashCommand, SlashContext, ComponentContext
-from discord_slash.model import ButtonStyle
-from typing import Union, Any
-
 
 #defining stuff lol
 intents = discord.Intents().all()
