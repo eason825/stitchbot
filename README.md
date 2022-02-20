@@ -1,4 +1,6 @@
 # stitchbot
+
+## i stopped working on this github...
 an open source fortnite discord bot
 
 
