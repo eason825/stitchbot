@@ -4,8 +4,6 @@
 an open source fortnite discord bot
 
 
-# Do Not Remove Credits Thanks :)
-* if you gonna skid please atleast star :)
 ## credits:
 * Fortnite-Api (officer)
 * FortniteApi.io (Quentin, GMatrixGames)
